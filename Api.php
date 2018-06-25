@@ -302,6 +302,7 @@ class Api
         'username' => null,
         'password' => null,
         'signature' => null,
+        'subject' => null,
         'return_url' => null,
         'cancel_url' => null,
         'sandbox' => null,
@@ -393,6 +394,23 @@ class Api
     public function getTransactionDetails(array $fields)
     {
         $fields['METHOD'] = 'GetTransactionDetails';
+
+        $this->addVersionField($fields);
+        $this->addAuthorizeFields($fields);
+
+        return $this->doRequest($fields);
+    }
+
+    /**
+     * Require: STARTDATE
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function transactionSearch(array $fields)
+    {
+        $fields['METHOD'] = 'TransactionSearch';
 
         $this->addVersionField($fields);
         $this->addAuthorizeFields($fields);
@@ -617,6 +635,10 @@ class Api
         $fields['PWD'] = $this->options['password'];
         $fields['USER'] = $this->options['username'];
         $fields['SIGNATURE'] = $this->options['signature'];
+
+        if ($this->options['subject']) {
+            $fields['SUBJECT'] = $this->options['subject'];
+        }
     }
 
     /**
