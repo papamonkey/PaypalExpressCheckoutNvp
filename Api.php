@@ -419,6 +419,23 @@ class Api
     }
 
     /**
+     * Require: TRANSACTIONID
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function refund(array $fields)
+    {
+        $fields['METHOD'] = 'RefundTransaction';
+
+        $this->addVersionField($fields);
+        $this->addAuthorizeFields($fields);
+
+        return $this->doRequest($fields);
+    }
+
+    /**
      * Require: PAYMENTREQUEST_0_AMT, PAYMENTREQUEST_0_PAYMENTACTION, PAYERID, TOKEN
      *
      * @param array $fields
